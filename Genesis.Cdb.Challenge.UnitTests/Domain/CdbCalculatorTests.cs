@@ -38,13 +38,16 @@ public class CdbCalculatorTests
     }
 
     [Theory]
+    [InlineData(1, 0.225)]
     [InlineData(6, 0.225)]
+    [InlineData(7, 0.20)]
     [InlineData(12, 0.20)]
+    [InlineData(13, 0.175)]
     [InlineData(24, 0.175)]
     [InlineData(25, 0.15)]
-    public void Should_Apply_Correct_Tax_Rate(
-        int months,
-        decimal expectedTaxRate)
+    public void Should_Apply_Correct_Tax_For_All_Ranges(
+       int months,
+       decimal expectedTax)
     {
         // Arrange
         decimal initialAmount = 1000m;
@@ -60,15 +63,14 @@ public class CdbCalculatorTests
         decimal netProfit =
             result.NetAmount - initialAmount;
 
-        decimal appliedTax =
-            1 - netProfit / grossProfit;
+        decimal taxApplied =
+            1 - (netProfit / grossProfit);
 
         // Assert
-        Math.Round(appliedTax, 3)
+        Math.Round(taxApplied, 3)
             .Should()
-            .Be(Math.Round(expectedTaxRate, 3));
+            .Be(Math.Round(expectedTax, 3));
     }
-
     [Fact]
     public void Should_Return_Values_Rounded_To_Two_Decimal_Places()
     {
