@@ -19,4 +19,5 @@
     <ProjectReference Include="..\Genesis.Cdb.Challenge.Domain\Genesis.Cdb.Challenge.Domain.csproj" />
   </ItemGroup>
 
+
 </Project>

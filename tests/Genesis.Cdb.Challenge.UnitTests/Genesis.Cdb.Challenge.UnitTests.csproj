@@ -19,11 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="..\..\src\Genesis.Cdb.Challenge.Application\Genesis.Cdb.Challenge.Application.csproj" />
+    <ProjectReference Include="..\..\src\Genesis.Cdb.Challenge.Domain\Genesis.Cdb.Challenge.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Genesis.Cdb.Challenge.Domain\Genesis.Cdb.Challenge.Domain.csproj" />
+    <Using Include="Xunit" />
   </ItemGroup>
+
 
 </Project>
