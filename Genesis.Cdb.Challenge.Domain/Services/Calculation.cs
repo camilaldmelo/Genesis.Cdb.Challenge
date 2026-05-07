@@ -27,10 +27,11 @@ namespace Genesis.Cdb.Challenge.Domain.Services
 
             decimal profit = grossAmount - initialAmount;
 
-            decimal tax = GetTax(months);
+            decimal tax = GetTaxRate(months);
 
-            decimal netAmount =
-                grossAmount - (profit * tax);
+            decimal taxValue = profit * tax;
+
+            decimal netAmount = grossAmount - taxValue;
 
             return new CdbCalculationResponse
             {
@@ -39,7 +40,7 @@ namespace Genesis.Cdb.Challenge.Domain.Services
             };
         }
 
-        private static decimal GetTax(int months)
+        private static decimal GetTaxRate(int months)
         {
             return months switch
             {
