@@ -1,21 +1,20 @@
 # Genesis CDB Challenge
 
-## Sobre o Projeto
+Aplicação desenvolvida para o desafio técnico Genesis.
 
-Este projeto foi desenvolvido como parte do desafio técnico para a Genesis.
+A solução contém:
 
-A solução consiste em:
-
-* Uma Web API desenvolvida em ASP.NET Core
-* Uma aplicação Web desenvolvida em Angular CLI
-* Implementação utilizando Clean Architecture
-* Uso de CQRS com MediatR
-* Validações com FluentValidation
-* Testes unitários com cobertura superior a 90%
+* Web API em .NET
+* Frontend em Angular CLI
+* Clean Architecture
+* CQRS com MediatR
+* FluentValidation
+* Testes unitários
+* Cobertura de testes superior a 90%
 
 ---
 
-# Tecnologias Utilizadas
+# Tecnologias
 
 ## Backend
 
@@ -33,7 +32,8 @@ A solução consiste em:
 
 * Angular CLI
 * TypeScript
-* Angular Forms
+* HTML
+* CSS
 * HttpClient
 
 ---
@@ -57,7 +57,7 @@ tests/
 
 # Arquitetura
 
-O projeto backend foi desenvolvido utilizando:
+O backend foi desenvolvido utilizando:
 
 * Clean Architecture
 * CQRS
@@ -72,7 +72,8 @@ Responsável por:
 
 * Controllers
 * Swagger
-* Configuração de DI
+* Configuração da aplicação
+* Dependency Injection
 * Middlewares
 
 ### Application
@@ -83,6 +84,7 @@ Responsável por:
 * Handlers
 * Validators
 * DTOs
+* Interfaces
 
 ### Domain
 
@@ -90,13 +92,13 @@ Responsável por:
 
 * Regras de negócio
 * Cálculo do CDB
-* Regras tributárias
+* Tributação
 
 ---
 
 # Regra de Negócio
 
-A aplicação calcula o rendimento de um investimento em CDB utilizando:
+O cálculo do CDB utiliza a fórmula:
 
 ```txt
 VF = VI x [1 + (CDI x TB)]
@@ -122,96 +124,27 @@ O cálculo é realizado utilizando juros compostos mês a mês.
 
 ---
 
-# Como Executar o Projeto
-
-## Pré-requisitos
-
-Instalar:
-
-* .NET 8 SDK
-* Node.js
-* Angular CLI
-* Visual Studio 2022 ou superior
-
----
-
-# Executando a API
-
-## 1. Restaurar dependências
-
-```bash
-dotnet restore
-```
-
-## 2. Executar a API
-
-```bash
-dotnet run --project src/Genesis.Cdb.Challenge.Api
-```
-
-## 3. Swagger
-
-Acesse:
-
-```txt
-https://localhost:xxxx/swagger
-```
-
----
-
-# Executando o Frontend Angular
-
-## 1. Entrar na pasta do projeto
-
-```bash
-cd src/genesis-cdb-web
-```
-
-## 2. Instalar dependências
-
-```bash
-npm install
-```
-
-## 3. Executar aplicação
-
-```bash
-ng serve
-```
-
-## 4. Acessar aplicação
-
-```txt
-http://localhost:4200
-```
-
----
-
 # Endpoint da API
-
-## Calcular investimento
-
-### Request
 
 ```http
 POST /api/financial/calculate
 ```
 
-### Body
+## Request
 
 ```json
 {
   "initialAmount": 1000,
-  "months": 12
+  "months": 10
 }
 ```
 
-### Response
+## Response
 
 ```json
 {
-  "grossAmount": 1122.51,
-  "netAmount": 1098.01
+  "grossAmount": 1101.23,
+  "netAmount": 1080.15
 }
 ```
 
@@ -222,9 +155,10 @@ POST /api/financial/calculate
 A API valida:
 
 * Valor inicial maior que zero
-* Prazo maior que um mês
+* Prazo em meses maior que 1
+* Prazo em meses menor que 12
 
-Em caso de erro, a API retorna:
+Quando inválido, retorna:
 
 ```http
 400 Bad Request
@@ -232,19 +166,102 @@ Em caso de erro, a API retorna:
 
 ---
 
-# Testes Unitários
+# Frontend Angular
 
-Os testes unitários cobrem:
+A aplicação frontend foi desenvolvida utilizando Angular CLI.
 
-* Cálculo bruto
-* Cálculo líquido
-* Regras de imposto
-* Regras de validação
-* Handlers
-* Crescimento composto
-* Arredondamento
+## Funcionalidades
 
-## Executar testes
+* Informar valor inicial do investimento
+* Informar prazo em meses
+* Consumir API REST do backend
+* Exibir valor bruto do investimento
+* Exibir valor líquido do investimento
+* Validação básica de formulário
+
+## Estrutura Frontend
+
+```txt
+src/app
+ │
+ ├── models
+ │    ├── cdb-request.ts
+ │    └── cdb-response.ts
+ │
+ ├── services
+ │    └── cdb.service.ts
+ │
+ └── pages
+      └── cdb-calculator
+```
+
+## Comunicação com Backend
+
+O Angular consome:
+
+```txt
+POST /api/financial/calculate
+```
+
+URL local utilizada:
+
+```txt
+https://localhost:7063/api/financial/calculate
+```
+
+O backend possui configuração de CORS habilitada.
+
+---
+
+# Executando a API
+
+Na raiz da solução:
+
+```bash
+dotnet restore
+
+dotnet run --project src/Genesis.Cdb.Challenge.Api
+```
+
+Swagger:
+
+```txt
+https://localhost:7063/swagger
+```
+
+---
+
+# Executando o Frontend Angular
+
+Entre na pasta do Angular:
+
+```bash
+cd src/genesis-cdb-web
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Execute:
+
+```bash
+ng serve
+```
+
+Acesse:
+
+```txt
+http://localhost:4200
+```
+
+---
+
+# Executando os Testes
+
+Na raiz da solução:
 
 ```bash
 dotnet test
@@ -252,23 +269,41 @@ dotnet test
 
 ---
 
-# Cobertura de Código
+# Cobertura de Testes
 
-## Executar cobertura
+Execute:
 
 ```bash
 dotnet test --collect:"XPlat Code Coverage"
 ```
 
-## Gerar relatório HTML
+---
+
+# Gerar Relatório HTML
+
+Instale:
 
 ```bash
-reportgenerator \
--reports:**/coverage.cobertura.xml \
+dotnet tool install -g dotnet-reportgenerator-globaltool
+```
+
+Windows CMD:
+
+```bash
+reportgenerator ^
+-reports:**/coverage.cobertura.xml ^
 -targetdir:coveragereport
 ```
 
-## Abrir relatório
+PowerShell:
+
+```powershell
+reportgenerator `
+-reports:**/coverage.cobertura.xml `
+-targetdir:coveragereport
+```
+
+Abrir:
 
 ```txt
 coveragereport/index.html
@@ -278,52 +313,48 @@ A cobertura da camada lógica é superior a 90%.
 
 ---
 
-# Qualidade de Código
+# SonarLint
 
-O projeto foi desenvolvido seguindo:
+Instalação:
 
-* Padrões SOLID
-* Clean Code
-* Sem warnings do Visual Studio
-* Compatível com regras padrão do SonarLint
+```txt
+Extensions
+→ Manage Extensions
+→ SonarLint for Visual Studio
+```
 
----
+Ativar análise completa:
 
-# Pacotes Utilizados
+```txt
+Tools
+→ Options
+→ Text Editor
+→ C#
+→ Advanced
+→ Enable full solution analysis
+```
 
-## Backend
+Depois:
 
-```bash
-dotnet add package MediatR.Extensions.Microsoft.DependencyInjection
-
-dotnet add package FluentValidation.AspNetCore
-
-dotnet add package Swashbuckle.AspNetCore
-
-dotnet add package xunit
-
-dotnet add package xunit.runner.visualstudio
-
-dotnet add package FluentAssertions
-
-dotnet add package Moq
-
-dotnet add package coverlet.collector
+```txt
+Build → Rebuild Solution
 ```
 
 ---
 
-# Melhorias Futuras
+# Requisitos Atendidos
 
-* Dockerização
-* CI/CD
-* Testes de integração
-* Logging estruturado
-* Health Checks
-* Observabilidade
-
----
-
-# Autor
-
-Desenvolvido para o desafio técnico Genesis.
+* Web API em .NET
+* Frontend Angular CLI
+* Clean Architecture
+* CQRS
+* MediatR
+* FluentValidation
+* Swagger
+* API REST
+* Sem banco de dados
+* Testes unitários
+* Cobertura superior a 90%
+* Compatível com SonarLint
+* Backend e frontend no mesmo repositório
+* README com instruções de execução
