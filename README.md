@@ -14,27 +14,30 @@ A solução contém:
 
 ---
 
-# Tecnologias
+# Tecnologias e Versões
 
 ## Backend
 
-* .NET 8
-* ASP.NET Core Web API
-* MediatR
-* FluentValidation
-* Swagger
-* xUnit
-* Moq
-* FluentAssertions
-* Coverlet
+| Tecnologia | Versão |
+|---|---|
+| .NET | 8 |
+| ASP.NET Core Web API | 8 |
+| MediatR | 11.1.0 |
+| FluentValidation | 11.x |
+| Swagger / Swashbuckle | 6.x |
+| xUnit | 2.x |
+| FluentAssertions | 6.x |
+| Coverlet | 6.x |
 
 ## Frontend
 
-* Angular CLI
-* TypeScript
-* HTML
-* CSS
-* HttpClient
+| Tecnologia | Versão |
+|---|---|
+| Angular CLI | 20.x |
+| Angular | 20.x |
+| TypeScript | 5.x |
+| Node.js | 22.x |
+| npm | 10.x |
 
 ---
 
@@ -116,11 +119,11 @@ O cálculo é realizado utilizando juros compostos mês a mês.
 ## Tributação
 
 | Prazo             | Imposto |
-| ----------------- | ------- |
-| Até 6 meses       | 22,5%   |
-| Até 12 meses      | 20%     |
-| Até 24 meses      | 17,5%   |
-| Acima de 24 meses | 15%     |
+| ----------------- | -------- |
+| Até 6 meses       | 22,5%    |
+| Até 12 meses      | 20%      |
+| Até 24 meses      | 17,5%    |
+| Acima de 24 meses | 15%      |
 
 ---
 
@@ -156,7 +159,6 @@ A API valida:
 
 * Valor inicial maior que zero
 * Prazo em meses maior que 1
-* Prazo em meses menor que 12
 
 Quando inválido, retorna:
 
@@ -177,6 +179,7 @@ A aplicação frontend foi desenvolvida utilizando Angular CLI.
 * Consumir API REST do backend
 * Exibir valor bruto do investimento
 * Exibir valor líquido do investimento
+* Exibir mensagens de erro retornadas pela API
 * Validação básica de formulário
 
 ## Estrutura Frontend
@@ -261,10 +264,16 @@ http://localhost:4200
 
 # Executando os Testes
 
-Na raiz da solução:
+## Backend
 
 ```bash
 dotnet test
+```
+
+## Frontend
+
+```bash
+npm test -- --watch=false
 ```
 
 ---
