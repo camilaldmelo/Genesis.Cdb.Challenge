@@ -20,11 +20,11 @@
       [(ngModel)]="months">
   </div>
 
-  <button (click)="calculate()">
+  <button  type="button" (click)="calculate()">
     Calculate
   </button>
 
-  <div *ngIf="grossAmount">
+  <div *ngIf="grossAmount != null && netAmount != null">
 
     <h3>Result</h3>
 
@@ -39,7 +39,7 @@
     </p>
   </div>
 
-  <div *ngIf="errorMessage">
+  <div *ngIf="errorMessage != null"  class="error-message">
 
     {{ errorMessage }}
 

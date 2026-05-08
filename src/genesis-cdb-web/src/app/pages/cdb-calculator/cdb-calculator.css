@@ -19,3 +19,9 @@ button {
   padding: 10px 16px;
   cursor: pointer;
 }
+
+.error-message {
+  margin-top: 16px;
+  color: #b00020;
+  font-weight: 600;
+}

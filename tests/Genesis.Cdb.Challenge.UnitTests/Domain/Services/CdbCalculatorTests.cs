@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Genesis.Cdb.Challenge.Domain.Services;
 
-namespace Genesis.Cdb.Challenge.UnitTests.Domain;
+namespace Genesis.Cdb.Challenge.UnitTests.Domain.Services;
 
 public class CdbCalculatorTests
 {
@@ -38,7 +38,7 @@ public class CdbCalculatorTests
     }
 
     [Theory]
-    [InlineData(1, 0.225)]
+    [InlineData(2, 0.225)]
     [InlineData(6, 0.225)]
     [InlineData(7, 0.20)]
     [InlineData(12, 0.20)]
@@ -46,8 +46,8 @@ public class CdbCalculatorTests
     [InlineData(24, 0.175)]
     [InlineData(25, 0.15)]
     public void Should_Apply_Correct_Tax_For_All_Ranges(
-       int months,
-       decimal expectedTax)
+        int months,
+        decimal expectedTax)
     {
         // Arrange
         decimal initialAmount = 1000m;
@@ -64,13 +64,14 @@ public class CdbCalculatorTests
             result.NetAmount - initialAmount;
 
         decimal taxApplied =
-            1 - (netProfit / grossProfit);
+            1 - netProfit / grossProfit;
 
         // Assert
         Math.Round(taxApplied, 3)
             .Should()
             .Be(Math.Round(expectedTax, 3));
     }
+
     [Fact]
     public void Should_Return_Values_Rounded_To_Two_Decimal_Places()
     {
@@ -94,25 +95,6 @@ public class CdbCalculatorTests
     }
 
     [Fact]
-    public void Gross_Amount_Should_Increase_Month_Over_Month()
-    {
-        // Arrange
-        decimal initialAmount = 1000m;
-
-        // Act
-        var result6Months =
-            _calculator.Calculate(initialAmount, 6);
-
-        var result12Months =
-            _calculator.Calculate(initialAmount, 12);
-
-        // Assert
-        result12Months.GrossAmount
-            .Should()
-            .BeGreaterThan(result6Months.GrossAmount);
-    }
-
-    [Fact]
     public void Net_Amount_Should_Be_Greater_Than_Initial_Amount()
     {
         // Arrange
@@ -128,5 +110,56 @@ public class CdbCalculatorTests
         result.NetAmount
             .Should()
             .BeGreaterThan(initialAmount);
+    }
+
+    [Fact]
+    public void Should_Calculate_Compound_Interest_Using_Monthly_Formula()
+    {
+        // Arrange
+        decimal initialAmount = 1000m;
+        int months = 2;
+
+        decimal expectedGrossAmount =
+            initialAmount
+            * (1 + (0.009m * 1.08m))
+            * (1 + (0.009m * 1.08m));
+
+        // Act
+        var result = _calculator.Calculate(
+            initialAmount,
+            months);
+
+        // Assert
+        result.GrossAmount
+            .Should()
+            .Be(Math.Round(expectedGrossAmount, 2));
+    }
+
+    [Fact]
+    public void Should_Calculate_Reference_GrossAmount_For_6_Months()
+    {
+        // Act
+        var result = _calculator.Calculate(
+            1000m,
+            6);
+
+        // Assert
+        result.GrossAmount
+            .Should()
+            .Be(1059.76m);
+    }
+
+    [Fact]
+    public void Should_Calculate_Reference_GrossAmount_For_12_Months()
+    {
+        // Act
+        var result = _calculator.Calculate(
+            1000m,
+            12);
+
+        // Assert
+        result.GrossAmount
+            .Should()
+            .Be(1123.08m);
     }
 }
