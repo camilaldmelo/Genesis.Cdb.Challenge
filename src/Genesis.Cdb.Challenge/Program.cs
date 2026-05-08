@@ -22,11 +22,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(
-        typeof(CalculateCdbCommandHandler).Assembly);
-});
+builder.Services.AddMediatR(
+    typeof(CalculateCdbCommandHandler).Assembly);
 
 builder.Services.AddScoped<
     ICdbCalculator,
@@ -60,4 +57,4 @@ app.UseCors("AllowAll");
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
